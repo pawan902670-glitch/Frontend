@@ -1,85 +1,53 @@
-const inputBox = document.getElementById("inputBox");
+const taskInput = document.getElementById("taskInput");
+const taskList = document.getElementById("taskList");
 
-const container = document.getElementById("list-container");
+function addTask(){
 
-function AddTask() {
+  let task = taskInput.value.trim();
 
-  const taskText = inputBox.value.trim();
-
-  if (taskText === '') {
-
-    alert("Please enter the list");
-
+  if(task === ""){
+    alert("Enter a task");
     return;
-
   }
 
   let li = document.createElement("li");
 
-  li.style.display = "flex";
+  let text = document.createElement("span");
+  text.innerText = task;
 
-  li.style.alignItems = "center";
-
-  let textSpan = document.createElement("span");
-
-  textSpan.innerText = taskText;
-
-  let btnBox = document.createElement("div");
-
-  btnBox.style.marginLeft = "auto";
-
-  btnBox.style.display = "flex";
-
-  btnBox.style.gap = "8px";
+  let btns = document.createElement("div");
+  btns.classList.add("btns");
 
   let editBtn = document.createElement("span");
-
   editBtn.innerHTML = "✏️";
+  editBtn.classList.add("edit");
 
-  editBtn.style.cursor = "pointer";
+  let deleteBtn = document.createElement("span");
+  deleteBtn.innerHTML = "🗑️";
+  deleteBtn.classList.add("delete");
 
-  editBtn.onclick = function () {
-
-    let newText = prompt("Edit your task:", textSpan.innerText);
-
-    if (newText) {
-
-      textSpan.innerText = newText;
-
-    }
-
+  editBtn.onclick = function(e){
+    e.stopPropagation();
+    let newTask = prompt("Edit task", text.innerText);
+    if(newTask) text.innerText = newTask;
   };
 
-  let delBtn = document.createElement("span");
-
-  delBtn.innerHTML = "❎";
-
-  delBtn.style.cursor = "pointer";
-
-  delBtn.onclick = function () {
-
+  deleteBtn.onclick = function(e){
+    e.stopPropagation();
     li.remove();
-
   };
 
-  btnBox.appendChild(editBtn);
+  li.onclick = function(){
+    text.classList.toggle("completed");
+  };
 
-  btnBox.appendChild(delBtn);
+  btns.appendChild(editBtn);
+  btns.appendChild(deleteBtn);
 
-  li.appendChild(textSpan);
+  li.appendChild(text);
+  li.appendChild(btns);
 
-  li.appendChild(btnBox);
+  taskList.appendChild(li);
 
-  li.addEventListener("click", function (e) {
-
-    if (e.target === editBtn || e.target === delBtn) return;
-
-    li.classList.toggle("checked");
-
-  });
-
-  container.appendChild(li);
-
-  inputBox.value = "";
-
+  taskInput.value = "";
 }
