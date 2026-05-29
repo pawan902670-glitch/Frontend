@@ -1,33 +1,62 @@
-import  {useState} from "react";
-import "./style.css";
- function BMI(){
-   const [Height,setHeight]=useState("");
-   const [weight,setweight]=useState("");
-   const [BMI,setBMI]=useState("");
+import { useState } from "react";
+import "./App.css";
 
-   function Calculate(){
-     setBMI(weight/(Height*Height)*10000)
-   }
-   return(
-     <div className="container">
-     <h1>BMI calculator </h1>
-     <input className="h" value={Height} placeholder="Enter the height in cm "onChange={(event)=>setHeight(event.target.value)}></input>
-     <input className="w" value={weight} placeholder="Enter the weight in kg  " onChange={(event)=>setweight(event.target.value)}></input>
-     <button style={{backgroundColor:"#8b6f50",color:"#fff", border:"none",borderRadius:"5px",padding:"5px", margin:"5px" ,boxShadow:"boxShadow:10px 10px 10px rgba(0,0,0,0.05)"}}onClick={Calculate}>Calculate BMI</button>
-     <h2>BMI is :{BMI}</h2>
-     {
-       BMI && (
-         BMI<=18.5 ?<h3 style={{color:"#ff9800"}}>❎underweight</h3>:
-         BMI<25 ? <h3>✅normal weight</h3>:
-         BMI<30 ? <h3>❎overweight</h3>:
-         <h3>👎obese</h3>
-       )
+function BMI() {
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
+  const [bmi, setBMI] = useState("");
 
+  function calculateBMI() {
+    if (!height || !weight) {
+      alert("Please enter height and weight");
+      return;
+    }
 
-     }
+    const result = (weight / (height * height)) * 10000;
+    setBMI(result.toFixed(2));
+  }
 
-     </div>
+  return (
+    <div className="container">
+      <h1>BMI Calculator</h1>
 
-   )
- }
- export default  BMI;
+      <input
+        className="input"
+        type="number"
+        placeholder="Enter height in cm"
+        value={height}
+        onChange={(e) => setHeight(e.target.value)}
+      />
+
+      <input
+        className="input"
+        type="number"
+        placeholder="Enter weight in kg"
+        value={weight}
+        onChange={(e) => setWeight(e.target.value)}
+      />
+
+      <button className="btn" onClick={calculateBMI}>
+        Calculate BMI
+      </button>
+
+      {bmi && (
+        <div className="result">
+          <h2>Your BMI : {bmi}</h2>
+
+          {bmi <= 18.5 ? (
+            <h3 className="under">❎ Underweight</h3>
+          ) : bmi < 25 ? (
+            <h3 className="normal">✅ Normal Weight</h3>
+          ) : bmi < 30 ? (
+            <h3 className="over">❎ Overweight</h3>
+          ) : (
+            <h3 className="obese">👎 Obese</h3>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default BMI;
